@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 544 340" width="544" height="340" role="img" aria-label="Prelim Activity 1">
+  <rect width="544" height="340" fill="#eef1ea"/>
+  <rect x="0" y="0" width="544" height="76" fill="#31452a"/>
+  <text x="32" y="50" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="27" fill="#ffffff">Prelim Activity 1</text>
+  <rect x="0" y="76" width="544" height="4" fill="#c7b183"/>
+  <rect x="24" y="96" width="496" height="220" rx="8" fill="#fbfcf9" stroke="#ccd5c6"/>
+    <rect x="48" y="112" width="448" height="26" rx="5" fill="#ccd5c6"/>
+    <rect x="48" y="152" width="140" height="140" rx="8" fill="#47613e"/>
+    <rect x="204" y="152" width="140" height="133" rx="8" fill="#6d2b4e"/>
+    <rect x="360" y="152" width="136" height="124" rx="8" fill="#ccd5c6"/>
+    <circle cx="470" cy="125" r="8" fill="#c7b183"/>
+  <text x="512" y="314" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#71806f">Prelim</text>
+</svg>

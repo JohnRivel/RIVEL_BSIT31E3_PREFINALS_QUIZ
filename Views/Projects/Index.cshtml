@@ -1,0 +1,64 @@
+@model ContentsViewModel
+@{
+    ViewData["Title"] = string.IsNullOrEmpty(Model.ActiveTerm) ? "Home" : Model.ActiveTerm;
+    var user = User.FindFirst("DisplayName")?.Value ?? User.Identity?.Name ?? "there";
+    var showAll = !string.IsNullOrEmpty(Model.ActiveTerm);
+}
+
+<section class="greet">
+    <div class="avatar avatar--big"><img src="~/img/profile.webp" alt="@user profile picture" width="72" height="72" /></div>
+    <div>
+        <h1>Hello, @user</h1>
+        <p>@Model.TotalProjects projects from IT Elective 2. Pick one to jump in.</p>
+    </div>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(Model.Query))
+{
+    <p class="filtered">
+        Results for &ldquo;@Model.Query&rdquo;.
+        <a asp-action="Index" asp-route-term="@Model.ActiveTerm">Clear</a>
+    </p>
+}
+
+@if (Model.Terms.All(t => t.Projects.Count == 0))
+{
+    <p class="empty">Nothing matched. Try a different search.</p>
+}
+
+@foreach (var term in Model.Terms)
+{
+    if (term.Projects.Count == 0 && !showAll) { continue; }
+
+    <section class="row" id="@term.Term.ToLowerInvariant()" aria-labelledby="row-@term.Term.ToLowerInvariant()">
+        <div class="row__head">
+            <div>
+                <h2 id="row-@term.Term.ToLowerInvariant()">@term.Term</h2>
+                <p class="row__blurb">@term.Blurb</p>
+            </div>
+            @if (!showAll)
+            {
+                <a class="row__more" asp-action="Index" asp-route-term="@term.Term" asp-route-q="@Model.Query">See all</a>
+            }
+        </div>
+
+        @if (term.Projects.Count == 0)
+        {
+            <p class="empty">Nothing here yet.</p>
+        }
+        else
+        {
+            <div class="scroller @(showAll ? "scroller--grid" : "")">
+                @foreach (var project in term.Projects)
+                {
+                    var count = Model.CommentCounts.TryGetValue(project.Slug, out var c) ? c : 0;
+                    <a class="tile" asp-action="Details" asp-route-id="@project.Slug">
+                        <img class="tile__img" src="@Url.Content("~" + project.Thumbnail)" alt="" width="544" height="340" loading="lazy" />
+                        <div class="tile__title">@project.Title</div>
+                        <div class="tile__meta">@project.Role &middot; @count comment@(count == 1 ? "" : "s")</div>
+                    </a>
+                }
+            </div>
+        }
+    </section>
+}

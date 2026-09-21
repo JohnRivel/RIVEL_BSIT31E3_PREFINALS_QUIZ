@@ -1,0 +1,79 @@
+@{
+    var authed = User.Identity?.IsAuthenticated == true;
+    var currentTerm = Context.Request.Query["term"].ToString();
+    var onProjects = ViewContext.RouteData.Values["controller"]?.ToString() == "Projects"
+                     && ViewContext.RouteData.Values["action"]?.ToString() == "Index";
+    var displayName = User.FindFirst("DisplayName")?.Value ?? User.Identity?.Name ?? "";
+    var terms = new[] { ("Prelim", "📘"), ("Midterm", "📗"), ("Prefinals", "📙"), ("Finals", "🏁") };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>@ViewData["Title"] - Rivel, John Cristian I.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="icon" href="~/img/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    @if (authed)
+    {
+        <header class="topbar">
+            <a class="logo" asp-controller="Projects" asp-action="Index">
+                <span class="logo__mark" aria-hidden="true">P</span>
+                <span class="logo__text">Portfolio</span>
+            </a>
+
+            <form class="search" asp-controller="Projects" asp-action="Index" method="get" role="search">
+                <label class="skip" for="q">Search projects</label>
+                <input type="search" id="q" name="q" value="@Context.Request.Query["q"]" placeholder="Search" />
+            </form>
+
+            <div class="userbar">
+                <span class="userbar__name">@displayName</span>
+                <span class="avatar"><img src="~/img/profile.webp" alt="@displayName profile picture" width="34" height="34" /></span>
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn btn--ghost">Sign out</button>
+                </form>
+            </div>
+        </header>
+    }
+
+    <div class="app @(authed ? "app--shell" : "app--bare")">
+        @if (authed)
+        {
+            <aside class="sidebar">
+                <nav aria-label="Primary">
+                    <a class="navlink @(onProjects && currentTerm == "" ? "navlink--on" : "")" asp-controller="Projects" asp-action="Index">
+                        <span class="navlink__icon" aria-hidden="true">🏠</span>Home
+                    </a>
+                    <div class="sidebar__label">Terms</div>
+                    @foreach (var (name, icon) in terms)
+                    {
+                        <a class="navlink @(onProjects && string.Equals(currentTerm, name, StringComparison.OrdinalIgnoreCase) ? "navlink--on" : "")"
+                           asp-controller="Projects" asp-action="Index" asp-route-term="@name">
+                            <span class="navlink__icon" aria-hidden="true">@icon</span>@name
+                        </a>
+                    }
+                    <div class="sidebar__label">Links</div>
+                    <a class="navlink" href="https://github.com/JohnRivel" target="_blank" rel="noopener noreferrer">
+                        <span class="navlink__icon" aria-hidden="true">🔗</span>GitHub profile
+                    </a>
+                </nav>
+            </aside>
+        }
+
+        <main id="main" class="content @(authed ? "" : "content--bare")">
+            @RenderBody()
+        </main>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

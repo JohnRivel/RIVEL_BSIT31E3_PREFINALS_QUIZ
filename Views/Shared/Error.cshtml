@@ -1,0 +1,16 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Something went wrong";
+}
+
+<div class="auth">
+    <div class="auth__card">
+        <h1>Something went wrong</h1>
+        <p>@Model.Message Go back home and try again.</p>
+        @if (Model.ShowRequestId)
+        {
+            <p class="row__blurb">Request ID: @Model.RequestId</p>
+        }
+        <a class="btn btn--block" asp-controller="Projects" asp-action="Index">Back home</a>
+    </div>
+</div>

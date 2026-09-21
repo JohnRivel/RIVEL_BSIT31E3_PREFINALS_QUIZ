@@ -1,0 +1,45 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="auth">
+    <div class="logo"><span class="logo__mark" aria-hidden="true">P</span><span>Portfolio</span></div>
+
+    <form class="auth__card" asp-controller="Account" asp-action="Login" method="post" autocomplete="off">
+        <h1>Log in</h1>
+
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        @{ var formErrors = ViewData.ModelState[string.Empty]; }
+        @if (formErrors is not null && formErrors.Errors.Count > 0)
+        {
+            <div class="summary" role="alert">
+                <ul>
+                    @foreach (var error in formErrors.Errors)
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="field">
+            <label asp-for="Username"></label>
+            <input asp-for="Username" autocomplete="username" autofocus />
+            <span class="error" asp-validation-for="Username"></span>
+        </div>
+
+        <div class="field">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" type="password" autocomplete="current-password" />
+            <span class="error" asp-validation-for="Password"></span>
+        </div>
+
+        <button type="submit" class="btn btn--block">Log in</button>
+
+        <div class="creds">
+            <code>@Model.PublishedUsername</code> / <code>@Model.PublishedPassword</code>
+        </div>
+    </form>
+</div>

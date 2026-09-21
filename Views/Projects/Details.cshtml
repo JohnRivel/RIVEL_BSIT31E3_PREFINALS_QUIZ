@@ -1,0 +1,114 @@
+@model ProjectDetailViewModel
+@{
+    ViewData["Title"] = Model.Project.Title;
+    var p = Model.Project;
+}
+
+<div class="game">
+    <p class="crumb">
+        <a asp-action="Index">Home</a><span>/</span><a asp-action="Index" asp-route-term="@p.Term">@p.Term</a><span>/</span>@p.Title
+    </p>
+
+    <div class="game__top">
+        <img class="game__thumb" src="@Url.Content("~" + p.Thumbnail)" alt="Thumbnail of the @p.Title project" width="544" height="340" />
+
+        <div class="game__info">
+            <h1>@p.Title</h1>
+            <p class="game__by">By Rivel, John Cristian I.</p>
+
+            <div class="chips">
+                <span class="chip chip--accent">@p.Term</span>
+                @foreach (var tech in p.Tech)
+                {
+                    <span class="chip">@tech</span>
+                }
+            </div>
+
+            <a class="btn btn--play" href="@p.RepositoryWebUrl" target="_blank" rel="noopener noreferrer">&#9654; View on GitHub</a>
+            <span class="repo-name">@p.RepositoryName</span>
+
+            <div class="stats">
+                <div class="stat"><b>Term</b><span>@p.Term</span></div>
+                <div class="stat"><b>Role</b><span>@p.Role</span></div>
+                <div class="stat"><b>Course</b><span>@p.Course</span></div>
+            </div>
+        </div>
+    </div>
+
+    <section class="panel" aria-labelledby="about-title">
+        <h2 id="about-title">About</h2>
+        <p>@p.Overview</p>
+
+        @if (p.Highlights.Count > 0)
+        {
+            <ul class="covers">
+                @foreach (var highlight in p.Highlights)
+                {
+                    <li>@highlight</li>
+                }
+            </ul>
+        }
+    </section>
+
+    <nav class="pager" aria-label="Project navigation">
+        @if (Model.Previous is not null)
+        {
+            <a asp-action="Details" asp-route-id="@Model.Previous.Slug">&larr; @Model.Previous.Title</a>
+        }
+        @if (Model.Next is not null)
+        {
+            <a class="right" asp-action="Details" asp-route-id="@Model.Next.Slug">@Model.Next.Title &rarr;</a>
+        }
+    </nav>
+
+    <section class="panel comments" aria-labelledby="comments-title">
+        <h2 id="comments-title">Comments</h2>
+
+        @if (TempData["CommentPosted"] is string message)
+        {
+            <div class="notice" role="status">@message</div>
+        }
+
+        <form class="comment-form" asp-action="Comment" asp-route-id="@p.Slug" method="post">
+            <div class="field">
+                <label asp-for="NewComment.Author"></label>
+                <input asp-for="NewComment.Author" maxlength="40" />
+                <span class="error" asp-validation-for="NewComment.Author"></span>
+            </div>
+            <div class="field">
+                <label asp-for="NewComment.Body"></label>
+                <textarea asp-for="NewComment.Body" maxlength="600"></textarea>
+                <span class="error" asp-validation-for="NewComment.Body"></span>
+            </div>
+            <button type="submit" class="btn">Post comment</button>
+        </form>
+
+        @if (Model.Comments.Count == 0)
+        {
+            <p class="empty">No comments yet. Be the first to leave one.</p>
+        }
+        else
+        {
+            foreach (var comment in Model.Comments)
+            {
+                <article class="comment">
+                    <div class="avatar" aria-hidden="true">@(comment.Author.Length > 0 ? comment.Author[..1].ToUpperInvariant() : "?")</div>
+                    <div class="comment__body-wrap">
+                        <div class="comment__head">
+                            <span class="comment__author">@comment.Author</span>
+                            <time class="comment__time" datetime="@comment.PostedAt.ToString("O")">@comment.PostedAt.LocalDateTime.ToString("MMM d, yyyy")</time>
+                            @if (string.Equals(comment.PostedBy, User.Identity?.Name, StringComparison.OrdinalIgnoreCase))
+                            {
+                                <form asp-action="DeleteComment" asp-route-id="@p.Slug" method="post">
+                                    <input type="hidden" name="commentId" value="@comment.Id" />
+                                    <button type="submit" class="btn--link">Delete</button>
+                                </form>
+                            }
+                        </div>
+                        <p class="comment__body">@comment.Body</p>
+                    </div>
+                </article>
+            }
+        }
+    </section>
+</div>

@@ -1,0 +1,15 @@
+@model LandingViewModel
+@{
+    ViewData["Title"] = "Portfolio";
+}
+
+<div class="auth">
+    <div class="logo"><span class="logo__mark" aria-hidden="true">P</span><span>Portfolio</span></div>
+
+    <div class="auth__card">
+        <h1>Welcome to my IT Elective 2 portfolio</h1>
+        <p>Sign in to browse the projects, open their detail pages and leave comments.</p>
+        <a class="btn btn--block" asp-controller="Account" asp-action="Login">Log in</a>
+
+    </div>
+</div>

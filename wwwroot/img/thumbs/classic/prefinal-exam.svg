@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 544 340" width="544" height="340" role="img" aria-label="Prefinal Exam">
+  <rect width="544" height="340" fill="#eef1ea"/>
+  <rect x="0" y="0" width="544" height="76" fill="#31452a"/>
+  <text x="32" y="50" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="27" fill="#ffffff">Prefinal Exam</text>
+  <rect x="0" y="76" width="544" height="4" fill="#c7b183"/>
+  <rect x="24" y="96" width="496" height="220" rx="8" fill="#fbfcf9" stroke="#ccd5c6"/>
+    <rect x="48" y="112" width="250" height="150" rx="8" fill="#ccd5c6"/>
+    <rect x="119" y="138" width="250" height="150" rx="8" fill="#47613e"/>
+    <rect x="157" y="164" width="250" height="150" rx="8" fill="#6d2b4e"/>
+    <circle cx="368" cy="142" r="20" fill="#c7b183"/>
+  <text x="512" y="314" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#71806f">Prefinals</text>
+</svg>
