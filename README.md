@@ -49,17 +49,3 @@ dotnet run
 
 Then open the URL printed in the terminal and sign in with the credentials above. In Visual Studio, open `Portfolio.slnx`, set `Portfolio` as the startup project and press F5.
 
-## Editing the portfolio
-
-- **Project details** — all projects live in `Services/ProjectRepository.cs`. Each entry takes an optional `description` and `highlights` list.
-- **Thumbnails** — every project gets a generated gradient thumbnail. Choose the look with `Portfolio:ThumbnailStyle` in `appsettings.json`: `aurora`, `ios-icon`, `ios-widget`, `neon` or `classic`. To use a real screenshot instead, save it as `wwwroot/img/projects/<slug>.png` (`.jpg` and `.webp` also work) and restart the app. It replaces the generated thumbnail automatically.
-
-## Project structure
-
-```
-Controllers/   Home, Account (login), Projects (contents, details, comments)
-Models/        Project, Comment and the view models
-Services/      Project data, in-memory comments, hardcoded authenticator
-Views/         Razor views for the landing page, login, contents and detail pages
-wwwroot/       CSS and thumbnail images
-```
